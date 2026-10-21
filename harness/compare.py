@@ -3,17 +3,23 @@
 import json
 import sys
 from collections import defaultdict
+from pathlib import Path
+
+GOLDENS = json.loads((Path(__file__).parent / "goldens.json").read_text())
 
 
 def load(path):
     run = json.load(open(path))
-    results = defaultdict(list)
+    # a golden with no result means the app call failed before scoring
+    results = {g["input"]: [] for g in GOLDENS}
     for case in run["testCases"]:
         results[case["input"]].append(case["success"])
     return run["identifier"], results
 
 
 def status(passes):
+    if not passes:
+        return "error"
     if all(passes):
         return "always pass"
     if not any(passes):
@@ -30,7 +36,8 @@ def summary(name, results):
     print(
         f"{name}: {passed} of {total} passed | "
         f"always pass {counts['always pass']} | "
-        f"always fail {counts['always fail']} | flaky {counts['flaky']}"
+        f"always fail {counts['always fail']} | flaky {counts['flaky']} | "
+        f"error {counts['error']}"
     )
 
 

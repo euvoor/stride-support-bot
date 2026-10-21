@@ -3,3 +3,4 @@ __pycache__/
 .deepeval/
 runs/
 .venv/
+harness/traces.json

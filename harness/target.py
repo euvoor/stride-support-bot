@@ -1,4 +1,5 @@
 import os
+import time
 
 import requests
 from dotenv import load_dotenv
@@ -15,12 +16,16 @@ def wake_up():
 
 
 def ask(question, source="harness"):
-    response = requests.post(
-        f"{URL}/chat",
-        json={"question": question, "source": source},
-        headers=HEADERS,
-        timeout=120,
-    )
+    for attempt in range(3):
+        response = requests.post(
+            f"{URL}/chat",
+            json={"question": question, "source": source},
+            headers=HEADERS,
+            timeout=120,
+        )
+        if response.status_code < 500:
+            break
+        time.sleep(10 * (attempt + 1))  # server errors are often short outages
     response.raise_for_status()
     data = response.json()
     return data["answer"], data["sources"]
