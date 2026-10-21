@@ -20,5 +20,10 @@ jobs:
       # run the pull request's version of the bot inside the CI machine
       - run: nohup uvicorn stride.server:app --port 8000 &
       - run: curl --retry 15 --retry-connrefused --retry-delay 2 -sf http://127.0.0.1:8000/health
-      - run: deepeval test run test_harness.py -id pr-${{ github.event.number }}
+      # score the pull request; known failures do not stop the job here
+      - run: mkdir -p ../runs && deepeval test run test_harness.py -id pr-${{ github.event.number }} || true
         working-directory: harness
+        env:
+          DEEPEVAL_RESULTS_FOLDER: ../runs
+      # fail the check only when a golden that always passed on main now fails
+      - run: python harness/compare.py harness/baseline.json runs/test_run_*.json

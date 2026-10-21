@@ -1,0 +1,245 @@
+{
+ "identifier": "main-prompt-v2",
+ "testCases": [
+  {
+   "input": "hi, i bought running shoes 5 weeks ago and they hurt. can i send them back?",
+   "success": false
+  },
+  {
+   "input": "hi, i bought running shoes 5 weeks ago and they hurt. can i send them back?",
+   "success": false
+  },
+  {
+   "input": "hi, i bought running shoes 5 weeks ago and they hurt. can i send them back?",
+   "success": false
+  },
+  {
+   "input": "Can I return shoes I wore once outside?",
+   "success": true
+  },
+  {
+   "input": "Can I return shoes I wore once outside?",
+   "success": true
+  },
+  {
+   "input": "Can I return shoes I wore once outside?",
+   "success": true
+  },
+  {
+   "input": "I threw away the box. Can I still return my shoes?",
+   "success": true
+  },
+  {
+   "input": "I threw away the box. Can I still return my shoes?",
+   "success": true
+  },
+  {
+   "input": "I threw away the box. Can I still return my shoes?",
+   "success": true
+  },
+  {
+   "input": "How long until I get my refund?",
+   "success": true
+  },
+  {
+   "input": "How long until I get my refund?",
+   "success": true
+  },
+  {
+   "input": "How long until I get my refund?",
+   "success": false
+  },
+  {
+   "input": "Do you ship to Mexico?",
+   "success": true
+  },
+  {
+   "input": "Do you ship to Mexico?",
+   "success": true
+  },
+  {
+   "input": "Do you ship to Mexico?",
+   "success": true
+  },
+  {
+   "input": "How much is express shipping?",
+   "success": true
+  },
+  {
+   "input": "How much is express shipping?",
+   "success": false
+  },
+  {
+   "input": "How much is express shipping?",
+   "success": true
+  },
+  {
+   "input": "My order 4821 has not arrived. Where is it?",
+   "success": false
+  },
+  {
+   "input": "My order 4821 has not arrived. Where is it?",
+   "success": false
+  },
+  {
+   "input": "My order 4821 has not arrived. Where is it?",
+   "success": true
+  },
+  {
+   "input": "Where is my order 9999?",
+   "success": true
+  },
+  {
+   "input": "Where is my order 9999?",
+   "success": true
+  },
+  {
+   "input": "Where is my order 9999?",
+   "success": true
+  },
+  {
+   "input": "Can I exchange for a half size up?",
+   "success": true
+  },
+  {
+   "input": "Can I exchange for a half size up?",
+   "success": true
+  },
+  {
+   "input": "Can I exchange for a half size up?",
+   "success": true
+  },
+  {
+   "input": "I got a gift card for my birthday. Can I get cash for it?",
+   "success": true
+  },
+  {
+   "input": "I got a gift card for my birthday. Can I get cash for it?",
+   "success": false
+  },
+  {
+   "input": "I got a gift card for my birthday. Can I get cash for it?",
+   "success": false
+  },
+  {
+   "input": "Can I return shoes after 25 days?",
+   "success": true
+  },
+  {
+   "input": "Can I return shoes after 25 days?",
+   "success": true
+  },
+  {
+   "input": "Can I return shoes after 25 days?",
+   "success": true
+  },
+  {
+   "input": "It has been 31 days. Is there any way to return them?",
+   "success": true
+  },
+  {
+   "input": "It has been 31 days. Is there any way to return them?",
+   "success": false
+  },
+  {
+   "input": "It has been 31 days. Is there any way to return them?",
+   "success": true
+  },
+  {
+   "input": "Do you price match?",
+   "success": false
+  },
+  {
+   "input": "Do you price match?",
+   "success": false
+  },
+  {
+   "input": "Do you price match?",
+   "success": false
+  },
+  {
+   "input": "Can I pay with PayPal?",
+   "success": false
+  },
+  {
+   "input": "Can I pay with PayPal?",
+   "success": true
+  },
+  {
+   "input": "Can I pay with PayPal?",
+   "success": false
+  },
+  {
+   "input": "How long does standard shipping to Toronto take?",
+   "success": true
+  },
+  {
+   "input": "How long does standard shipping to Toronto take?",
+   "success": false
+  },
+  {
+   "input": "How long does standard shipping to Toronto take?",
+   "success": true
+  },
+  {
+   "input": "Can I send my refund to a different card?",
+   "success": false
+  },
+  {
+   "input": "Can I send my refund to a different card?",
+   "success": false
+  },
+  {
+   "input": "Can I send my refund to a different card?",
+   "success": false
+  },
+  {
+   "input": "Do you sell kids shoes?",
+   "success": false
+  },
+  {
+   "input": "Do you sell kids shoes?",
+   "success": false
+  },
+  {
+   "input": "Do you sell kids shoes?",
+   "success": false
+  },
+  {
+   "input": "My shoes arrived damaged. What should I do?",
+   "success": false
+  },
+  {
+   "input": "My shoes arrived damaged. What should I do?",
+   "success": false
+  },
+  {
+   "input": "My shoes arrived damaged. What should I do?",
+   "success": false
+  },
+  {
+   "input": "Can I return a gift card?",
+   "success": true
+  },
+  {
+   "input": "Can I return a gift card?",
+   "success": false
+  },
+  {
+   "input": "Can I return a gift card?",
+   "success": false
+  },
+  {
+   "input": "I want a bigger size but it has been 6 weeks. Can I still exchange?",
+   "success": true
+  },
+  {
+   "input": "I want a bigger size but it has been 6 weeks. Can I still exchange?",
+   "success": true
+  },
+  {
+   "input": "I want a bigger size but it has been 6 weeks. Can I still exchange?",
+   "success": true
+  }
+ ]
+}

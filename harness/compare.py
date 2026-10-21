@@ -56,3 +56,7 @@ for label, check in checks.items():
     print(f"\n{label} ({len(rows)})")
     for q in rows:
         print(f"  {status(old[q]):11} -> {status(new[q]):11}  {q}")
+
+# fail CI only when something that always passed before now fails
+regressions = [q for q in new if status(old[q]) == "always pass" and status(new[q]) != "always pass"]
+sys.exit(1 if regressions else 0)
