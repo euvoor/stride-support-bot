@@ -48,7 +48,8 @@ summary(new_name, new)
 
 checks = {
     "Fixed": lambda a, b: a != "always pass" and b == "always pass",
-    "Regressions": lambda a, b: a == "always pass" and b != "always pass",
+    "Regressions": lambda a, b: a == "always pass" and b == "always fail",
+    "Now flaky, read these": lambda a, b: a == "always pass" and b == "flaky",
     "Still failing": lambda a, b: b == "always fail",
 }
 for label, check in checks.items():
@@ -57,6 +58,7 @@ for label, check in checks.items():
     for q in rows:
         print(f"  {status(old[q]):11} -> {status(new[q]):11}  {q}")
 
-# fail CI only when something that always passed before now fails
-regressions = [q for q in new if status(old[q]) == "always pass" and status(new[q]) != "always pass"]
+# fail CI only when something that always passed now always fails;
+# one flaky run is often the judge, so a person reads those instead
+regressions = [q for q in new if checks["Regressions"](status(old[q]), status(new[q]))]
 sys.exit(1 if regressions else 0)

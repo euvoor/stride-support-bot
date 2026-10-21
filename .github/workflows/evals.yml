@@ -21,7 +21,7 @@ jobs:
       - run: nohup uvicorn stride.server:app --port 8000 &
       - run: curl --retry 15 --retry-connrefused --retry-delay 2 -sf http://127.0.0.1:8000/health
       # score the pull request; known failures do not stop the job here
-      - run: mkdir -p ../runs && deepeval test run test_harness.py -id pr-${{ github.event.number }} || true
+      - run: mkdir -p ../runs && deepeval test run test_harness.py -id pr-${{ github.event.number }} -r 3 || true
         working-directory: harness
         env:
           DEEPEVAL_RESULTS_FOLDER: ../runs
