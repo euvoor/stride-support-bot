@@ -1,0 +1,24 @@
+name: evals
+on:
+  pull_request:
+    paths: ["stride/**", "harness/goldens.json"]
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    env:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      CONFIDENT_API_KEY: ${{ secrets.CONFIDENT_API_KEY }}
+      STRIDE_API_TOKEN: ci-only-token
+      STRIDE_URL: http://127.0.0.1:8000
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt -r harness/requirements.txt
+      # run the pull request's version of the bot inside the CI machine
+      - run: nohup uvicorn stride.server:app --port 8000 &
+      - run: curl --retry 15 --retry-connrefused --retry-delay 2 -sf http://127.0.0.1:8000/health
+      - run: deepeval test run test_harness.py -id pr-${{ github.event.number }}
+        working-directory: harness

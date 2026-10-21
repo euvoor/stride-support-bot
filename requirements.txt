@@ -1,0 +1,5 @@
+fastapi==0.159.0
+uvicorn==0.54.0
+openai==3.35.1
+confident-trace==0.1.9
+python-dotenv

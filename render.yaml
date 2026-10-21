@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: stride-support-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn stride.server:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: CONFIDENT_API_KEY
+        sync: false
+      - key: STRIDE_API_TOKEN
+        sync: false

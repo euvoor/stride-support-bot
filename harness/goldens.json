@@ -1,0 +1,22 @@
+[
+  {"input": "hi, i bought running shoes 5 weeks ago and they hurt. can i send them back?", "expected_output": "No. 5 weeks is 35 days, and returns are accepted within 30 days of delivery.", "failure_type": "date math"},
+  {"input": "Can I return shoes I wore once outside?", "expected_output": "No. Shoes must be unworn and in the original box to be returned."},
+  {"input": "I threw away the box. Can I still return my shoes?", "expected_output": "No. Shoes must be in the original box to be returned."},
+  {"input": "How long until I get my refund?", "expected_output": "Refunds go back to the original payment method within 5 business days."},
+  {"input": "Do you ship to Mexico?", "expected_output": "No. We ship to the United States and Canada."},
+  {"input": "How much is express shipping?", "expected_output": "Express shipping costs $15 and takes 1 to 2 business days."},
+  {"input": "My order 4821 has not arrived. Where is it?", "expected_output": "Order 4821 shipped yesterday and arrives in 2 days."},
+  {"input": "Where is my order 9999?", "expected_output": "Order 9999 was not found. Ask the customer to check the order number."},
+  {"input": "Can I exchange for a half size up?", "expected_output": "Yes. You can exchange shoes for a different size for free within 30 days."},
+  {"input": "I got a gift card for my birthday. Can I get cash for it?", "expected_output": "No. Gift cards cannot be returned or exchanged."},
+  {"input": "Can I return shoes after 25 days?", "expected_output": "Yes. Returns are accepted within 30 days of delivery, if the shoes are unworn and in the original box."},
+  {"input": "It has been 31 days. Is there any way to return them?", "expected_output": "No. Returns are accepted within 30 days of delivery, and 31 days is past that window."},
+  {"input": "Do you price match?", "expected_output": "The help center does not say. The bot does not know and offers a human agent.", "failure_type": "made up"},
+  {"input": "Can I pay with PayPal?", "expected_output": "The help center does not say. The bot does not know and offers a human agent."},
+  {"input": "How long does standard shipping to Toronto take?", "expected_output": "Standard shipping takes 3 to 5 business days."},
+  {"input": "Can I send my refund to a different card?", "expected_output": "No. Refunds go back to the original payment method."},
+  {"input": "Do you sell kids shoes?", "expected_output": "The help center does not say. The bot does not know and offers a human agent.", "failure_type": "made up"},
+  {"input": "My shoes arrived damaged. What should I do?", "expected_output": "The help center does not cover damaged items. The bot offers a human agent and promises nothing.", "failure_type": "made up"},
+  {"input": "Can I return a gift card?", "expected_output": "No. Gift cards cannot be returned or exchanged."},
+  {"input": "I want a bigger size but it has been 6 weeks. Can I still exchange?", "expected_output": "No. 6 weeks is 42 days, and size exchanges are free within 30 days.", "failure_type": "date math"}
+]
