@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from fastapi import FastAPI, Header, HTTPException
+from openai import OpenAIError
 from pydantic import BaseModel
 
 from stride.bot import answer
@@ -28,5 +29,9 @@ def health():
 def chat(body: ChatRequest, authorization: str = Header("")):
     if not secrets.compare_digest(authorization, f"Bearer {TOKEN}"):
         raise HTTPException(status_code=401, detail="Missing or wrong API token.")
-    text, docs = answer(body.question, source=body.source)
+    try:
+        text, docs = answer(body.question, source=body.source)
+    except OpenAIError as error:
+        # name the model error, so a failed eval run shows the cause
+        raise HTTPException(status_code=503, detail=f"OpenAI unavailable: {type(error).__name__}")
     return {"answer": text, "sources": docs}
