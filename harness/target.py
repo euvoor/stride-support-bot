@@ -26,6 +26,8 @@ def ask(question, source="harness"):
         if response.status_code < 500:
             break
         time.sleep(10 * (attempt + 1))  # server errors are often short outages
-    response.raise_for_status()
+    if not response.ok:
+        # keep the server's reason, for example "OpenAI unavailable: RateLimitError"
+        raise RuntimeError(f"/chat returned {response.status_code}: {response.text}")
     data = response.json()
     return data["answer"], data["sources"]
