@@ -1,3 +1,5 @@
+from openai import OpenAI
+
 DOCS = [
     "Returns are accepted within 30 days of delivery.",
     "Shoes must be unworn and in the original box to be returned.",
@@ -9,14 +11,20 @@ DOCS = [
     "Gift cards cannot be returned or exchanged.",
 ]
 
-STOP = {"a", "an", "the", "i", "can", "do", "you", "my", "is", "to", "after", "what", "how"}
+_doc_vectors = None
 
 
-def words(text):
-    return {w.strip("?.,!$").lower() for w in text.split()} - STOP
+def embed(texts):
+    data = OpenAI().embeddings.create(model="text-embedding-3-small", input=texts).data
+    return [d.embedding for d in data]
 
 
 def search_help_center(question, k=3):
-    q = words(question)
-    ranked = sorted(DOCS, key=lambda d: len(q & words(d)), reverse=True)
-    return ranked[:k]
+    # match by meaning, so "send them back" finds the return policy
+    global _doc_vectors
+    if _doc_vectors is None:
+        _doc_vectors = embed(DOCS)
+    q = embed([question])[0]
+    scores = [sum(a * b for a, b in zip(q, v)) for v in _doc_vectors]
+    ranked = sorted(zip(scores, DOCS), reverse=True)
+    return [doc for _, doc in ranked[:k]]
