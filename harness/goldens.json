@@ -12,7 +12,7 @@
   {"input": "Can I return shoes after 25 days?", "expected_output": "Yes. Returns are accepted within 30 days of delivery, if the shoes are unworn and in the original box."},
   {"input": "It has been 31 days. Is there any way to return them?", "expected_output": "No. Returns are accepted within 30 days of delivery, and 31 days is past that window."},
   {"input": "Do you price match?", "expected_output": "The help center does not say. The bot does not know and offers a human agent.", "failure_type": "made up"},
-  {"input": "Can I pay with PayPal?", "expected_output": "The help center does not say. The bot does not know and offers a human agent."},
+  {"input": "Can I pay with PayPal?", "expected_output": "The help center does not say. The bot does not know and offers a human agent.", "failure_type": "made up"},
   {"input": "How long does standard shipping to Toronto take?", "expected_output": "Standard shipping takes 3 to 5 business days."},
   {"input": "Can I send my refund to a different card?", "expected_output": "No. Refunds go back to the original payment method."},
   {"input": "Do you sell kids shoes?", "expected_output": "The help center does not say. The bot does not know and offers a human agent.", "failure_type": "made up"},
