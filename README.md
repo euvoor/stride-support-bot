@@ -20,10 +20,11 @@ Or deploy it on Render with `render.yaml` (free plan).
 ## Follow Part 2
 
 The tag `part-2-start` is the bot before the fixes, with the bugs that Part 2 finds.
-Check it out to follow the guide step by step. `main` has the fixed bot.
+To follow the guide step by step, copy in that bot and keep the latest harness.
+`main` has the fixed bot.
 
 ```bash
-git checkout part-2-start
+git checkout part-2-start -- stride
 ```
 
 ## Run the harness
