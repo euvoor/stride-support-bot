@@ -2,7 +2,7 @@
 
 A small AI support bot for a made-up shoe store, used in the
 [Evals and Tracing series](https://www.linkedin.com/pulse/evals-tracing-101-tony-cueva-bravo-jlhae/).
-Level 2 builds an eval harness around it.
+Part 2, "Build Your Eval Harness", builds an eval harness around it.
 
 - `stride/` is the app: a FastAPI server (`POST /chat`), a help center search, and the bot, traced with `confident-trace`.
 - `harness/` is the eval harness: it calls the running app over HTTP, scores every answer with DeepEval, and compares runs.
@@ -16,6 +16,15 @@ uvicorn stride.server:app --port 8000
 ```
 
 Or deploy it on Render with `render.yaml` (free plan).
+
+## Follow Part 2
+
+The tag `part-2-start` is the bot before the fixes, with the bugs that Part 2 finds.
+Check it out to follow the guide step by step. `main` has the fixed bot.
+
+```bash
+git checkout part-2-start
+```
 
 ## Run the harness
 
