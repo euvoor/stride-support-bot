@@ -33,8 +33,8 @@ pip install -r harness/requirements.txt
 cd harness
 python send_traffic.py                # customer-style questions, traced in Confident AI
 python pull_traces.py 24              # pull the last 24 hours of customer traces for review
-DEEPEVAL_RESULTS_FOLDER=../runs deepeval test run test_harness.py -id my-change -r 3
-python compare.py baseline.json ../runs/<new>.json   # exits 1 on regressions
+deepeval test run test_harness.py -id my-change -r 3
+python compare.py main-prompt-v2 my-change   # run IDs from Confident AI, exits 1 on regressions
 ```
 
 CI runs the harness on every pull request that changes `stride/` or the goldens.
