@@ -16,6 +16,7 @@ load_dotenv()
 
 API = "https://api.confident-ai.com/v1/test-runs"
 GOLDENS = json.loads((Path(__file__).parent / "goldens.json").read_text())
+REPEATS = 3  # the -r value of deepeval test run
 
 
 def fetch(identifier):
@@ -41,7 +42,7 @@ def load(name):
         name, cases = run["identifier"], run["testCases"]
     else:
         cases = fetch(name)
-    # a golden with no result means the app call failed before scoring
+    # a golden with a missing result means an app call failed before scoring
     results = {g["input"]: [] for g in GOLDENS}
     for case in cases:
         results[case["input"]].append(case["success"])
@@ -49,7 +50,8 @@ def load(name):
 
 
 def status(passes):
-    if not passes:
+    # a lost run must not hide inside "always pass", so count them
+    if len(passes) != REPEATS:
         return "error"
     if all(passes):
         return "always pass"
@@ -89,7 +91,12 @@ for label, check in checks.items():
     for q in rows:
         print(f"  {status(old[q]):11} -> {status(new[q]):11}  {q}")
 
-# fail CI only when something that always passed now always fails;
-# one flaky run is often the judge, so a person reads those instead
+errors = [q for q in new if status(new[q]) == "error"]
+print(f"\nErrors, missing results ({len(errors)})")
+for q in errors:
+    print(f"  {len(new[q])} of {REPEATS} results  {q}")
+
+# fail CI when something that always passed now always fails, or when a
+# result is missing; one flaky run is often the judge, so a person reads those
 regressions = [q for q in new if checks["Regressions"](status(old[q]), status(new[q]))]
-sys.exit(1 if regressions else 0)
+sys.exit(1 if regressions or errors else 0)

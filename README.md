@@ -35,7 +35,7 @@ cd harness
 python send_traffic.py                # customer-style questions, traced in Confident AI
 python pull_traces.py 24              # pull the last 24 hours of customer traces for review
 deepeval test run test_harness.py -id my-change -r 3
-python compare.py main-prompt-v2 my-change   # run IDs from Confident AI, exits 1 on regressions
+python compare.py main-prompt-v2 my-change   # run IDs from Confident AI, exits 1 on regressions or missing results
 ```
 
 CI runs the harness on every pull request that changes `stride/` or the goldens.
