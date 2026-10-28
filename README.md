@@ -39,3 +39,23 @@ python compare.py main-prompt-v2 my-change   # run IDs from Confident AI, exits 
 ```
 
 CI runs the harness on every pull request that changes `stride/` or the goldens.
+
+The comparator validates each question's exact three repeat names in both runs,
+not just the number of results. It expects the names emitted by the harness's
+`deepeval test run test_harness.py -r 3` command, such as
+`test_support_bot[golden0-1-3]`. Keep the golden order and harness parameter names
+the same between runs; regenerate the baseline when they change. Missing,
+duplicate, unexpected or unnamed repeats fail comparison before scoring.
+
+The checked-in historical `harness/baseline.json` contains only inputs and scores.
+CI explicitly uses `--allow-legacy-baseline` for that file. This permits a wholly
+unnamed old baseline with complete counts and warns that its identity coverage is
+unverified. It never permits an unnamed candidate or a partly named baseline.
+Replace the baseline with a fresh saved run to remove this exception; do not invent
+repeat names for historical scores.
+
+Run the comparator's offline regression tests without model calls or dependencies:
+
+```bash
+python -m unittest discover -s harness -p test_compare.py
+```

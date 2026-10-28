@@ -3,16 +3,12 @@
 Each run is a deepeval run ID, such as main-prompt-v2, or a saved run file.
 """
 
+import argparse
 import json
 import os
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
-
-import requests
-from dotenv import load_dotenv
-
-load_dotenv()
 
 API = "https://api.confident-ai.com/v1/test-runs"
 GOLDENS = json.loads((Path(__file__).parent / "goldens.json").read_text())
@@ -20,6 +16,10 @@ REPEATS = 3  # the -r value of deepeval test run
 
 
 def fetch(identifier):
+    import requests
+    from dotenv import load_dotenv
+
+    load_dotenv()
     # runs come newest first, so the first match is the latest run with this ID
     headers = {"CONFIDENT_API_KEY": os.environ["CONFIDENT_API_KEY"]}
     page = 1
@@ -36,17 +36,49 @@ def fetch(identifier):
         page += 1
 
 
-def load(name):
+def load(name, allow_legacy=False):
     if Path(name).is_file():
-        run = json.load(open(name))  # CI saves its run as a file
+        run = json.loads(Path(name).read_text())  # CI saves its run as a file
         name, cases = run["identifier"], run["testCases"]
     else:
         cases = fetch(name)
-    # a golden with a missing result means an app call failed before scoring
+    # DeepEval saves pytest's name, including the golden and repeat parameters.
+    expected = {
+        g["input"]: {f"test_support_bot[golden{i}-{r}-{REPEATS}]" for r in range(1, REPEATS + 1)}
+        for i, g in enumerate(GOLDENS)
+    }
+    legacy = allow_legacy and bool(cases) and all("name" not in case for case in cases)
+    if legacy:
+        print(f"Warning: {name}: legacy baseline identity coverage is unverified; regenerate it.",
+              file=sys.stderr)
     results = {g["input"]: [] for g in GOLDENS}
+    observed = {q: Counter() for q in results}
+    errors = []
     for case in cases:
-        results[case["input"]].append(case["success"])
-    return name, results
+        question = case.get("input")
+        if not isinstance(question, str) or question not in results:
+            errors.append(f"unknown question: {question!r}")
+            continue
+        if type(case.get("success")) is not bool:
+            errors.append(f"non-boolean result: {question}")
+            continue
+        results[question].append(case["success"])
+        if not legacy:
+            identity = case.get("name")
+            if not isinstance(identity, str) or identity not in expected[question]:
+                errors.append(f"missing or unexpected repeat identity {identity!r}: {question}")
+                continue
+            observed[question][identity] += 1
+    for question, passes in results.items():
+        if len(passes) != REPEATS:
+            errors.append(f"{len(passes)} of {REPEATS} results: {question}")
+        if not legacy:
+            for identity in sorted(expected[question]):
+                count = observed[question][identity]
+                if count != 1:
+                    kind = "missing" if count == 0 else "duplicate"
+                    errors.append(f"{kind} repeat {identity} ({count} results): {question}")
+    return name, results, errors
 
 
 def status(passes):
@@ -74,8 +106,21 @@ def summary(name, results):
     )
 
 
-old_name, old = load(sys.argv[1])
-new_name, new = load(sys.argv[2])
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("old")
+parser.add_argument("new")
+parser.add_argument("--allow-legacy-baseline", action="store_true",
+                    help="allow an old baseline with no names; its identity coverage remains unverified")
+args = parser.parse_args()
+old_name, old, old_errors = load(args.old, allow_legacy=args.allow_legacy_baseline)
+new_name, new, new_errors = load(args.new)
+if old_errors or new_errors:
+    for name, errors in ((old_name, old_errors), (new_name, new_errors)):
+        if errors:
+            print(f"{name}: invalid run ({len(errors)} errors)")
+            for error in errors:
+                print(f"  {error}")
+    sys.exit(1)
 summary(old_name, old)
 summary(new_name, new)
 

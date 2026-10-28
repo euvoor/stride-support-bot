@@ -26,4 +26,5 @@ jobs:
         env:
           DEEPEVAL_RESULTS_FOLDER: ../runs
       # fail the check only when a golden that always passed on main now fails
-      - run: python harness/compare.py harness/baseline.json runs/test_run_*.json
+      # The historical baseline has no repeat names; new runs must have exact identities.
+      - run: python harness/compare.py harness/baseline.json runs/test_run_*.json --allow-legacy-baseline
